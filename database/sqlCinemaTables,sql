@@ -1,0 +1,89 @@
+CREATE TABLE Movies (id INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT NOT NULL,duration INTEGER NOT NULL,classification TEXT NOT NULL,synopsis TEXT,director TEXT,releaseYear INTEGER NOT NULL);
+-- Create table for Screening Times
+CREATE TABLE ScreeningTimes (id INTEGER PRIMARY KEY AUTOINCREMENT,userID INTEGER, startTime TEXT NOT NULL,endTime TEXT NOT NULL,movieID INTEGER,theater TEXT NOT NULL,FOREIGN KEY (movieID) REFERENCES Movies(id));
+
+-- Create table for Reservations
+CREATE TABLE Reservations (reservationID INTEGER PRIMARY KEY AUTOINCREMENT,userID INTEGER,screeningID INTEGER,numberOfSeats INTEGER NOT NULL,FOREIGN KEY (screeningID) REFERENCES ScreeningTimes(id), FOREIGN KEY (userID) REFERENCES Users(id));
+
+-- Create table for Users
+CREATE TABLE Users (id INTEGER PRIMARY KEY AUTOINCREMENT,username TEXT NOT NULL UNIQUE,password TEXT NOT NULL,age INTEGER, email TEXT NOT NULL, loyaltyPoints INTEGER DEFAULT 0 );
+
+
+-------------------------------------------------------------------------------------------------------
+-- Create table for Ratings and Comments
+CREATE TABLE RatingsAndComments (id INTEGER PRIMARY KEY AUTOINCREMENT, movieID INTEGER, userID INTEGER, rating INTEGER CHECK(rating BETWEEN 1 AND 5), TEXT,FOREIGN KEY (movieID) REFERENCES Movies(id),FOREIGN KEY (userID) REFERENCES Users(id));
+
+-- Create table for Employees
+CREATE TABLE Employees (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL, position TEXT NOT NULL, hireDate TEXT NOT NULL, sales INTEGER DEFAULT 0);
+
+-- Create table for Attendance
+CREATE TABLE Attendance ( id INTEGER PRIMARY KEY AUTOINCREMENT,date TEXT NOT NULL,movieID INTEGER,attendanceCount INTEGER NOT NULL DEFAULT 0,FOREIGN KEY (movieID) REFERENCES Movies(id));
+
+-- If you have additional fields or other tables, you can add them similarly.
+
+/****************************************************************************************************************/
+
+INSERT INTO Movies (title, duration, classification, synopsis, director, releaseYear)
+VALUES ('The Great Adventure', 120, 'PG-13', 'A tale of courage and friendship.', 'John Doe', 2022),
+       ('Mystery Manor', 100, 'R', 'A thrilling journey through a haunted house.', 'Jane Smith', 2021),
+       ('Space Beyond', 140, 'PG-13', 'Astronauts explore a new galaxy.', 'Alice Cooper', 2023),
+       ('Love & War', 115, 'R', 'A love story during wartime.', 'James Johnson', 2020),
+       ('Comedy Central', 90, 'PG', 'A collection of hilarious stories.', 'Bob Brown', 2022);
+
+/************************************************************************************************************/
+
+INSERT INTO Users (username, password, age, email)
+VALUES ('JohnD123', 'password1', 25, 'john.doe@email.com'),
+       ('AliceC456', 'password2', 30, 'alice.cooper@email.com'),
+       ('BobBrown78', 'password3', 20, 'bob.brown@email.com'),
+       ('EveWhite90', 'password4', 35, 'eve.white@email.com'),
+       ('DavidBlu12', 'password5', 40, 'david.blue@email.com');
+       
+INSERT INTO ScreeningTimes (userID, startTime, endTime, movieID, theater)
+VALUES (1, '10:00:00', '12:00:00', 1, 'Theater A'),
+       (2, '14:00:00', '15:40:00', 2, 'Theater B'),
+       (3, '16:00:00', '18:20:00', 3, 'Theater C'),
+       (4, '19:00:00', '20:55:00', 4, 'Theater D'),
+       (5, '21:00:00', '22:30:00', 5, 'Theater E');
+
+INSERT INTO Reservations (userID, screeningID, numberOfSeats)
+VALUES (1, 1, 2),
+       (2, 2, 4),
+       (3, 3, 1),
+       (4, 4, 3),
+       (5, 5, 2);
+       
+INSERT INTO RatingsAndComments (movieID, userID, rating, TEXT)
+VALUES (1, 1, 4, 'Great movie!'),
+       (2, 2, 3, 'Scary but enjoyable.'),
+       (3, 3, 5, 'A masterpiece!'),
+       (4, 4, 2, 'Not my cup of tea.'),
+       (5, 5, 3, 'Funny moments throughout.');
+       
+INSERT INTO Employees (name, position, hireDate)
+VALUES ('Mike', 'Manager', '2020-01-01'),
+       ('Nina', 'Cashier', '2019-05-15'),
+       ('Oscar', 'Cleaner', '2021-06-01'),
+       ('Patty', 'Ticket Checker', '2018-12-10'),
+       ('Quinn', 'Security', '2017-03-20');
+
+INSERT INTO Attendance (date, movieID, attendanceCount)
+VALUES ('2023-01-01', 1, 100),
+       ('2023-01-02', 2, 75),
+       ('2023-01-03', 3, 150),
+       ('2023-01-04', 4, 50),
+       ('2023-01-05', 5, 80);
+
+select * from Users;
+
+select * from movies;
+
+select * from Reservations;
+
+select * from ScreeningTimes;
+
+select * from movies;
+
+select * from RatingsAndComments;
+
+
